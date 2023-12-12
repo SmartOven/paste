@@ -1,4 +1,4 @@
 package ru.panteleevya.paste.paste;
 
-public record PasteDto(String value) {
+public record PasteDto(String text) {
 }

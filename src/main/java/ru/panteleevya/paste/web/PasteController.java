@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.panteleevya.paste.paste.Paste;
+import ru.panteleevya.paste.paste.PasteCreationResponse;
 import ru.panteleevya.paste.paste.PasteDto;
 import ru.panteleevya.paste.paste.PasteSerializable;
 import ru.panteleevya.paste.storage.ObjectStorageService;
@@ -25,17 +26,17 @@ public class PasteController {
         if (pasteSerializable == null) {
             return ResponseEntity.notFound().build();
         }
-        Paste paste = new Paste(pasteSerializable.value());
+        Paste paste = new Paste(pasteSerializable.text(), pasteId);
         return ResponseEntity.ok(paste);
     }
 
     @PostMapping("/paste/create")
     public ResponseEntity<?> createPaste(@RequestBody PasteDto pasteDto) {
-        Paste paste = new Paste(pasteDto.value());
-        PasteSerializable pasteSerializable = new PasteSerializable(paste.value());
         String objectKey = UUID.randomUUID().toString();
+        Paste paste = new Paste(pasteDto.text(), objectKey);
+        PasteSerializable pasteSerializable = new PasteSerializable(paste.text());
         objectStorageService.compressAndSaveObject(objectKey, pasteSerializable);
-        return ResponseEntity.ok(objectKey);
+        return ResponseEntity.ok(new PasteCreationResponse(objectKey));
     }
 
     @DeleteMapping("/paste/delete")
