@@ -4,7 +4,7 @@ import PasteForm from "./ui/PasteForm.tsx";
 const PasteFormPage: React.FC = () => {
     return (
         <div>
-            <p>Форма для создания паст:</p>
+            <p>Form for creating pastes:</p>
             <PasteForm/>
         </div>
     )

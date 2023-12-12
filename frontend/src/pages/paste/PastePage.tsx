@@ -26,8 +26,11 @@ const PastePage: React.FC = () => {
                             <div>
                                 <button onClick={() => onDeletePaste(paste.pasteId)}>Delete paste</button>
                             </div>
+                            {/*<div className="text">*/}
                             <div>
-                                {paste.text}
+                                <pre>
+                                    {paste.text}
+                                </pre>
                             </div>
                         </div>
                     )}
