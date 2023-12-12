@@ -23,16 +23,12 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'com.amazonaws:aws-java-sdk-s3:1.12.609'
+    implementation('com.amazonaws:aws-java-sdk-s3:1.12.609') {
+        exclude group: 'commons-logging', module: 'commons-logging'
+    }
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
-    configurations {
-        configureEach {
-            exclude group: 'commons-logging', module: 'commons-logging'
-        }
-    }
 }
 
 tasks.named('test') {
