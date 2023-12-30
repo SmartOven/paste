@@ -1,4 +1,4 @@
-const backendUri = "http://localhost:8080"
+const backendUri = ""
 
 export enum RequestMethod {
     GET = "GET",
