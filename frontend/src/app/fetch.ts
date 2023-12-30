@@ -1,5 +1,3 @@
-const backendPort = ":8080"
-
 export enum RequestMethod {
     GET = "GET",
     POST = "POST",
@@ -12,7 +10,7 @@ export function executeFetch(
     method: RequestMethod,
     body: any = null,
 ): Promise<Response> {
-    return fetch(backendPort + uri, {
+    return fetch(uri, {
         body: body === null ? null : JSON.stringify(body),
         headers: [["Content-Type", "application/json"]],
         method,
