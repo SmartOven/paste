@@ -1,3 +1,9 @@
+let backendUri = ''
+
+if (window.location.hostname === 'localhost') {
+    backendUri = 'http://localhost:8080';
+}
+
 export enum RequestMethod {
     GET = "GET",
     POST = "POST",
@@ -10,7 +16,7 @@ export function executeFetch(
     method: RequestMethod,
     body: any = null,
 ): Promise<Response> {
-    return fetch(uri, {
+    return fetch(backendUri + uri, {
         body: body === null ? null : JSON.stringify(body),
         headers: [["Content-Type", "application/json"]],
         method,
