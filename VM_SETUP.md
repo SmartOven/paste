@@ -8,7 +8,7 @@ sudo apt update
 
 ```bash
 # Install Java 18
-sudo apt install openjdk-17-jdk
+sudo apt install openjdk-18-jdk
 ```
 
 ```bash
@@ -18,10 +18,11 @@ sudo apt install ufw
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
 
-sudo ufw allow ssh
-sudo ufw allow http
-sudo ufw allow https
-sudo ufw allow 8080
+sudo ufw allow 22/tcp
+sudo ufw allow 22
+sudo ufw allow 80/tcp
+sudo ufw allow 443
+sudo ufw allow 80,443/tcp
 
 sudo ufw enable
 
@@ -31,35 +32,21 @@ sudo ufw status verbose
 ```
 
 ```bash
-# Install nvm
-curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
-
-# Add this to the ~/.bashrc:
-# export NVM_DIR="$HOME/.nvm"
-# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-
-# After that renew the session to load ~/.bashrc changes
-
-# Install node
-nvm install node
-```
-
-```bash
-# Clone project
-git clone https://<token>@github.com/<account>/<project>.git
-```
-
-```bash
 # Install nginx
 sudo apt install nginx
 
-# Create nginx config
-sudo nano /etc/nginx/conf.d/react.conf
+# Edit default nginx config
+sudo nano /etc/nginx/sites-enabled/default
 
 # Check if it is valid
 sudo nginx -t
 
 # Reload nginx service
 sudo service nginx reload
+```
+
+```bash
+# Add this lines to ~/.bashrc
+export ENVIRONMENT="<env>"
+export YC_OAUTH_TOKEN="<oauth_token>"
 ```
