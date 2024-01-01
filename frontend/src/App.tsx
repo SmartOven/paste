@@ -1,12 +1,12 @@
 import React from 'react'
 import './App.css'
-import RootLayout from "./pages/RootLayout.tsx";
+import RootLayout from "./app/RootLayout.tsx";
 import {RouterProvider} from "react-router";
-import PasteFormPage from "./pages/paste/PasteFormPage.tsx";
+import PasteFormPage from "./pages/paste-form/PasteFormPage.tsx";
 import {createBrowserRouter} from "react-router-dom";
-import ErrorPage from "./pages/ErrorPage.tsx";
-import PasteNotFoundPage from "./pages/paste/PasteNotFoundPage.tsx";
-import PastePage from "./pages/paste/PastePage.tsx";
+import ErrorPage from "./app/ErrorPage.tsx";
+import PasteNotFoundPage from "./pages/paste-text/PasteNotFoundPage.tsx";
+import PastePage from "./pages/paste-text/PastePage.tsx";
 import {pasteLoader} from "./app/loaders.ts";
 
 const router = createBrowserRouter([

@@ -16,10 +16,10 @@ const PastePage: React.FC = () => {
 
     return (
         <div>
-            <Suspense fallback={<Preloader text={"Loading paste..."}/>}>
+            <Suspense fallback={<Preloader text={"Loading paste-text..."}/>}>
                 <Await
                     resolve={loaderData.paste}
-                    errorElement={<LoadingError text={"Error loading paste!"}/>}
+                    errorElement={<LoadingError text={"Error loading paste-text!"}/>}
                 >
                     {(paste: Paste) => (
                         <div>

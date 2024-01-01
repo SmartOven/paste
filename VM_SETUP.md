@@ -50,3 +50,32 @@ sudo service nginx reload
 export ENVIRONMENT="<env>"
 export YC_OAUTH_TOKEN="<oauth_token>"
 ```
+
+```bash
+# Install docker if needed
+# https://docs.docker.com/engine/install/ubuntu/
+```
+
+```bash
+# Install mongosh
+wget -qO- https://www.mongodb.org/static/pgp/server-7.0.asc | sudo tee /etc/apt/trusted.gpg.d/server-7.0.asc
+
+echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+
+sudo apt-get update
+
+sudo apt-get install -y mongodb-mongosh
+
+# Create mongo user
+mongosh mongodb://<user>:<password>@localhost:<port>
+
+use <db>
+db.createUser({
+    user: <username>,
+    pwd: <password>,
+    roles: [
+        { role: "readWrite", db: "miallo" }
+    ]
+});
+exit
+```

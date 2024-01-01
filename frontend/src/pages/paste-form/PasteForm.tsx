@@ -1,8 +1,9 @@
 import * as React from 'react'
 import './PasteForm.css'
 import {FormikState, useFormik} from "formik";
-import {executeFetch, RequestMethod} from "../../../app/fetch.ts";
+import {executeFetch, RequestMethod} from "../../app/fetch.ts";
 import {useNavigate} from "react-router-dom";
+import TextArea from "../../features/TextArea/TextArea.tsx";
 
 interface PasteFormValue {
     text: string
@@ -30,21 +31,14 @@ const PasteForm: React.FC = () => {
         },
     });
     return (
-        <div>
-            <form className="paste-form" onSubmit={formik.handleSubmit}>
-                <div>
-                    <textarea
-                        className="paste-text"
-                        id="text"
-                        name="text"
-                        placeholder="Write here the text of your paste"
-                        value={formik.values.text}
-                        onChange={formik.handleChange}
-                    />
-                </div>
-                <input type="submit" value="Create paste"/>
-            </form>
-        </div>
+        <form className="paste-form" onSubmit={formik.handleSubmit}>
+            <div className="text-area-box">
+                <TextArea value={formik.values.text} onChange={formik.handleChange}/>
+            </div>
+            <div className="submit-button-wrapper">
+                <input className="create-button" type="submit" value="Create paste"/>
+            </div>
+        </form>
     )
 }
 

@@ -1,0 +1,13 @@
+.paste-text-area {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    resize: none;
+    box-sizing: border-box;
+}
+
+.text-area-box-dont-remove {
+    width: 100%;
+    height: 100%;
+}

@@ -1,0 +1,16 @@
+.paste-form {
+    display: grid;
+    gap: 8px;
+}
+
+.submit-button-wrapper {
+    width: fit-content;
+}
+
+.create-button {
+/* TODO сделать красивой  */
+}
+
+.text-area-box {
+    height: 80vh;
+}
