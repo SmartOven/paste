@@ -1,75 +1,96 @@
 # Setup VM
 Example for Ubuntu 20+
 
+Update system
 ```bash
-# Update system
 sudo apt update
 ```
 
+Install Java 18
 ```bash
-# Install Java 18
 sudo apt install openjdk-18-jdk
 ```
 
+Setup UFW
 ```bash
-# Setup UFW
 sudo apt install ufw
-
-sudo ufw default deny incoming
-sudo ufw default allow outgoing
-
-sudo ufw allow 22/tcp
-sudo ufw allow 22
-sudo ufw allow 80/tcp
-sudo ufw allow 443
-sudo ufw allow 80,443/tcp
-
-sudo ufw enable
-
-sudo ufw status verbose
-
-# Dont forget to check if ssh connections are working
 ```
-
 ```bash
-# Install nginx
+sudo ufw default deny incoming
+```
+```bash
+sudo ufw default allow outgoing
+```
+```bash
+sudo ufw allow 22/tcp
+```
+```bash
+sudo ufw allow 22
+```
+```bash
+sudo ufw allow 80/tcp
+```
+```bash
+sudo ufw allow 443
+```
+```bash
+sudo ufw allow 80,443/tcp
+```
+```bash
+sudo ufw enable
+```
+```bash
+sudo ufw status verbose
+```
+Dont forget to check if ssh connections are working, then reboot
+
+Install nginx
+```bash
 sudo apt install nginx
-
-# Edit default nginx config
+```
+Edit default nginx config
+```bash
 sudo nano /etc/nginx/sites-enabled/default
-
-# Check if it is valid
+```
+Check if it is valid
+```bash
 sudo nginx -t
-
-# Reload nginx service
+```
+Reload nginx service
+```bash
 sudo service nginx reload
 ```
 
+Add this lines to `~/.bashrc`
 ```bash
-# Add this lines to ~/.bashrc
 export ENVIRONMENT="<env>"
 export YC_OAUTH_TOKEN="<oauth_token>"
 ```
 
+Install docker if needed - https://docs.docker.com/engine/install/ubuntu/
+
+Install mongosh
 ```bash
-# Install docker if needed
-# https://docs.docker.com/engine/install/ubuntu/
+wget -qO- https://www.mongodb.org/static/pgp/server-7.0.asc | sudo tee /etc/apt/trusted.gpg.d/server-7.0.asc
+```
+```bash
+echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+```
+```bash
+sudo apt-get update
+```
+```bash
+sudo apt-get install -y mongodb-mongosh
+```
+Create mongo user
+```bash
+mongosh mongodb://<user>:<password>@localhost:<port>
 ```
 
-```bash
-# Install mongosh
-wget -qO- https://www.mongodb.org/static/pgp/server-7.0.asc | sudo tee /etc/apt/trusted.gpg.d/server-7.0.asc
-
-echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
-
-sudo apt-get update
-
-sudo apt-get install -y mongodb-mongosh
-
-# Create mongo user
-mongosh mongodb://<user>:<password>@localhost:<port>
-
+```mongosh
 use <db>
+```
+```mongosh
 db.createUser({
     user: <username>,
     pwd: <password>,
@@ -77,5 +98,7 @@ db.createUser({
         { role: "readWrite", db: "miallo" }
     ]
 });
+```
+```mongosh
 exit
 ```
