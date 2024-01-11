@@ -92,8 +92,8 @@ use <db>
 ```
 ```mongosh
 db.createUser({
-    user: <username>,
-    pwd: <password>,
+    user: "<username>",
+    pwd: "<password>",
     roles: [
         { role: "readWrite", db: "<your_db>" }
     ]
