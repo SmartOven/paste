@@ -95,7 +95,7 @@ db.createUser({
     user: <username>,
     pwd: <password>,
     roles: [
-        { role: "readWrite", db: "miallo" }
+        { role: "readWrite", db: "<your_db>" }
     ]
 });
 ```
