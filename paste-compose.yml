@@ -9,6 +9,7 @@ services:
       - "8080:8080"
     networks:
       - app-network
+    restart: always
 
   frontend:
     build:
@@ -18,6 +19,7 @@ services:
       - "80:80"
     networks:
       - app-network
+    restart: always
 
 networks:
   app-network:

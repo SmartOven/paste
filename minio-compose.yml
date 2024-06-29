@@ -16,6 +16,7 @@ services:
       - storage:/var/lib/minio/data
     networks:
       - go_networks
+    restart: always
 secrets:
   minio_root_user:
     file: ./secrets/minio_root_user.txt
