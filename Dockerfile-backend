@@ -1,15 +1,17 @@
-FROM gradle:7.5.1-jdk17 AS build
+FROM gradle:7.6.0-jdk17 AS builder
 
-WORKDIR /app
+WORKDIR /home/gradle/project
 
-COPY . .
+COPY --chown=gradle:gradle . .
 
-RUN gradle build
+RUN gradle build --no-daemon
 
 FROM openjdk:17-jdk-slim
 
-COPY --from=build /app/build/libs/*.jar /app/service.jar
+WORKDIR /app
+
+COPY --from=builder /home/gradle/project/build/libs/*.jar app.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "/app/service.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
