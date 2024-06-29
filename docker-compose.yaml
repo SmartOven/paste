@@ -1,5 +1,26 @@
-version: "3.7"
+version: '3.8'
+
 services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile-backend
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+    restart: always
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile-frontend
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+    restart: always
+
   minio-s3:
     image: minio/minio:latest
     command: minio server /var/lib/minio/data --console-address ":9001"
@@ -15,8 +36,9 @@ services:
     volumes:
       - storage:/var/lib/minio/data
     networks:
-      - go_networks
+      - app-network
     restart: always
+
 secrets:
   minio_root_user:
     file: ./secrets/minio_root_user.txt
@@ -25,4 +47,4 @@ secrets:
 volumes:
   storage:
 networks:
-  go_networks:
+  app-network:
