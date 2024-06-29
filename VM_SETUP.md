@@ -42,7 +42,7 @@ sudo ufw enable
 ```bash
 sudo ufw status verbose
 ```
-Dont forget to check if ssh connections are working, then reboot
+Don't forget to check if ssh connections are working, then reboot
 
 Install nginx
 ```bash

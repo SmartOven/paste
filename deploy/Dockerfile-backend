@@ -1,0 +1,14 @@
+# Use an official OpenJDK 17 runtime as a parent image
+FROM openjdk:17-jre-slim
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the build output from Gradle
+COPY build/libs/*.jar app.jar
+
+# Expose the port your application runs on
+EXPOSE 8080
+
+# Run the Spring Boot application
+ENTRYPOINT ["java", "-jar", "app.jar"]
