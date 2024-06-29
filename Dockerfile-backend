@@ -1,14 +1,15 @@
-# Use an official OpenJDK 17 runtime as a parent image
-FROM openjdk:8-jdk-alpine
+FROM gradle:7.5.1-jdk17 AS build
 
-# Set the working directory inside the container
 WORKDIR /app
 
-# Copy the build output from Gradle
-COPY build/libs/*.jar app.jar
+COPY . .
 
-# Expose the port your application runs on
+RUN gradle build
+
+FROM openjdk:17-jdk-slim
+
+COPY --from=build /app/build/libs/*.jar /app/service.jar
+
 EXPOSE 8080
 
-# Run the Spring Boot application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "/app/service.jar"]
