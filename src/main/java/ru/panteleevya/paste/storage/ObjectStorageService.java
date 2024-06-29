@@ -42,6 +42,7 @@ public class ObjectStorageService {
         this.objectStorageClient = AmazonS3ClientBuilder.standard()
                 .withCredentials(credentialsProvider)
                 .withEndpointConfiguration(endpointConfiguration)
+                .withPathStyleAccessEnabled(true)
                 .build();
         this.retryCount = retryCount;
     }

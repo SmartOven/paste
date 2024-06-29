@@ -3,14 +3,12 @@ import {Paste} from "../../app/loaders.ts";
 import {Await, useLoaderData, useNavigate} from "react-router-dom";
 import Preloader from "../../app/Preloader.tsx";
 import LoadingError from "../../app/LoadingError.tsx";
-import {executeFetch, RequestMethod} from "../../app/fetch.ts";
 
 const PastePage: React.FC = () => {
     const navigate = useNavigate();
     const loaderData = useLoaderData() as { paste: Paste };
 
-    const onDeletePaste = async (pasteId: string) => {
-        await executeFetch(`/api/paste/delete?pasteId=${pasteId}`, RequestMethod.DELETE)
+    const onNavHome = async () => {
         navigate('/')
     }
 
@@ -24,7 +22,7 @@ const PastePage: React.FC = () => {
                     {(paste: Paste) => (
                         <div>
                             <div>
-                                <button onClick={() => onDeletePaste(paste.pasteId)}>Delete paste</button>
+                                <button onClick={onNavHome}>Create new paste</button>
                             </div>
                             {/*<div className="text">*/}
                             <div>
