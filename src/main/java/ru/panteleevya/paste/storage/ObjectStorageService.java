@@ -30,12 +30,12 @@ public class ObjectStorageService {
     private final int retryCount;
 
     public ObjectStorageService(
-            @Value("${yandex.cloud.object-storage.access-key-id}") String accessKeyId,
-            @Value("${yandex.cloud.object-storage.secret-access-key}") String secretAccessKey,
-            @Value("${yandex.cloud.object-storage.service-endpoint}") String serviceEndpoint,
-            @Value("${yandex.cloud.object-storage.signing-region}") String signingRegion,
-            @Value("${yandex.cloud.object-storage.bucket-name}") String bucketName,
-            @Value("${yandex.cloud.object-storage.retry-count}") int retryCount
+            @Value("${s3.access-key-id}") String accessKeyId,
+            @Value("${s3.secret-access-key}") String secretAccessKey,
+            @Value("${s3.service-endpoint}") String serviceEndpoint,
+            @Value("${s3.signing-region}") String signingRegion,
+            @Value("${s3.bucket-name}") String bucketName,
+            @Value("${s3.retry-count}") int retryCount
     ) {
         AWSCredentials credentials = new BasicAWSCredentials(accessKeyId, secretAccessKey);
         AWSCredentialsProvider credentialsProvider = new AWSStaticCredentialsProvider(credentials);
@@ -46,16 +46,6 @@ public class ObjectStorageService {
                 .withEndpointConfiguration(endpointConfiguration)
                 .build();
         this.retryCount = retryCount;
-    }
-
-    /**
-     * @return list of object keys in bucket
-     */
-    private List<String> listObjects() {
-        return objectStorageClient.listObjects(bucketName)
-                .getObjectSummaries().stream()
-                .map(S3ObjectSummary::getKey)
-                .toList();
     }
 
     /**
