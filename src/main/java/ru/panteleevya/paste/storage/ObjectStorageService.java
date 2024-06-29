@@ -1,17 +1,12 @@
 package ru.panteleevya.paste.storage;
 
 import com.amazonaws.SdkClientException;
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.AWSCredentialsProvider;
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -24,26 +19,16 @@ public class ObjectStorageService {
     private static final Logger log = LogManager.getLogger(ObjectStorageService.class);
 
     private final String bucketName;
-    private final AmazonS3 objectStorageClient;
+    private final AmazonS3 s3Client;
     private final int retryCount;
 
     public ObjectStorageService(
-            @Value("${s3.access-key-id}") String accessKeyId,
-            @Value("${s3.secret-access-key}") String secretAccessKey,
-            @Value("${s3.service-endpoint}") String serviceEndpoint,
-            @Value("${s3.signing-region}") String signingRegion,
             @Value("${s3.bucket-name}") String bucketName,
+            @Autowired AmazonS3 s3Client,
             @Value("${s3.retry-count}") int retryCount
     ) {
-        AWSCredentials credentials = new BasicAWSCredentials(accessKeyId, secretAccessKey);
-        AWSCredentialsProvider credentialsProvider = new AWSStaticCredentialsProvider(credentials);
-        EndpointConfiguration endpointConfiguration = new EndpointConfiguration(serviceEndpoint, signingRegion);
         this.bucketName = bucketName;
-        this.objectStorageClient = AmazonS3ClientBuilder.standard()
-                .withCredentials(credentialsProvider)
-                .withEndpointConfiguration(endpointConfiguration)
-                .withPathStyleAccessEnabled(true)
-                .build();
+        this.s3Client = s3Client;
         this.retryCount = retryCount;
     }
 
@@ -52,7 +37,7 @@ public class ObjectStorageService {
      */
     public Object fetchObject(String objectKey) {
         for (int retryIndex = 1; retryIndex <= retryCount; retryIndex++) {
-            try (S3Object s3Object = objectStorageClient.getObject(bucketName, objectKey);
+            try (S3Object s3Object = s3Client.getObject(bucketName, objectKey);
                  GZIPInputStream gzipInputStream = new GZIPInputStream(s3Object.getObjectContent());
                  ObjectInputStream objectInputStream = new ObjectInputStream(gzipInputStream)) {
                 return objectInputStream.readObject();
@@ -86,7 +71,7 @@ public class ObjectStorageService {
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(compressedObject);
             ObjectMetadata objectMetadata = new ObjectMetadata();
             objectMetadata.setContentLength(compressedObject.length);
-            objectStorageClient.putObject(bucketName, objectKey, byteArrayInputStream, objectMetadata);
+            s3Client.putObject(bucketName, objectKey, byteArrayInputStream, objectMetadata);
         } catch (SdkClientException e) {
             log.error("Saving object with key={} to object storage failed", objectKey);
             throw new RuntimeException(e);
@@ -98,7 +83,7 @@ public class ObjectStorageService {
      */
     public void deleteObject(String objectKey) {
         try {
-            objectStorageClient.deleteObject(bucketName, objectKey);
+            s3Client.deleteObject(bucketName, objectKey);
         } catch (SdkClientException ignored) {
             // no content anyway
         }
