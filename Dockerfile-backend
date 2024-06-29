@@ -1,5 +1,5 @@
 # Use an official OpenJDK 17 runtime as a parent image
-FROM openjdk:17-jre-slim
+FROM openjdk:8-jdk-alpine
 
 # Set the working directory inside the container
 WORKDIR /app
