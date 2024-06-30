@@ -2,14 +2,19 @@ FROM gradle:7.6.0-jdk17 AS builder
 
 WORKDIR /home/gradle/project
 
-COPY --chown=gradle:gradle ../.. .
+# Copy the Gradle build files
+COPY ../build.gradle ../settings.gradle ./
+# Copy the source code
+COPY ../src ./src
 
+# Run the Gradle build
 RUN gradle build --no-daemon
 
 FROM openjdk:17-jdk-slim
 
 WORKDIR /app
 
+# Copy the built JAR file from the builder stage
 COPY --from=builder /home/gradle/project/build/libs/*.jar app.jar
 
 EXPOSE 8080
