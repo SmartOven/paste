@@ -5,10 +5,15 @@ services:
     build:
       context: ../
       dockerfile: deploy/Dockerfile-backend
+    secrets:
+      - vault_addr
+      - vault_token
     ports:
       - "${BACKEND_PORT}:8080"
     environment:
       - ENVIRONMENT=${ENVIRONMENT}
+      - VAULT_ADDR=/run/secrets/vault_addr
+      - VAULT_TOKEN=/run/secrets/vault_token
     networks:
       - app-network
     restart: always
@@ -46,6 +51,10 @@ secrets:
     file: secrets/minio_root_user.txt
   minio_root_password:
     file: secrets/minio_root_password.txt
+  vault_addr:
+    file: secrets/vault_addr.txt
+  vault_token:
+    file: secrets/vault_token.txt
 volumes:
   storage:
 networks:
