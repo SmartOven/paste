@@ -16,6 +16,10 @@ services:
       - VAULT_TOKEN=/run/secrets/vault_token
     networks:
       - app-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1024m"
 #    restart: always
 
   frontend:
