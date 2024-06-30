@@ -11,12 +11,9 @@ services:
     ports:
       - "${BACKEND_PORT}:8080"
     environment:
-      #      - ENVIRONMENT=${ENVIRONMENT}
-      #      - VAULT_ADDR=/run/secrets/vault_addr
-      #      - VAULT_TOKEN=/run/secrets/vault_token
-      ENVIRONMENT: "${ENVIRONMENT}"
-      VAULT_ADDR: /run/secrets/vault_addr
-      VAULT_TOKEN: /run/secrets/vault_token
+      - APP_ENVIRONMENT=${APP_ENVIRONMENT}
+      - VAULT_ADDR=/run/secrets/vault_addr
+      - VAULT_TOKEN=/run/secrets/vault_token
     networks:
       - app-network
     restart: always
