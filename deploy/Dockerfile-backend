@@ -2,7 +2,9 @@ FROM gradle:7.6.0-jdk17 AS builder
 
 WORKDIR /home/gradle/project
 
-COPY --chown=gradle:gradle .. .
+# Copy the build files from the parent directory of 'deploy'
+COPY --chown=gradle:gradle ../build.gradle ../settings.gradle ./
+COPY --chown=gradle:gradle ../src ./src
 
 RUN gradle build --no-daemon
 
