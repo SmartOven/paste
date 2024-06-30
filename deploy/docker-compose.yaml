@@ -16,7 +16,7 @@ services:
       - VAULT_TOKEN=/run/secrets/vault_token
     networks:
       - app-network
-    restart: always
+#    restart: always
 
   frontend:
     build:
