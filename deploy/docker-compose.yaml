@@ -14,6 +14,9 @@ services:
       - ENVIRONMENT=${ENVIRONMENT}
       - VAULT_ADDR=/run/secrets/vault_addr
       - VAULT_TOKEN=/run/secrets/vault_token
+    #      ENVIRONMENT: "${ENVIRONMENT}"
+    #      VAULT_ADDR: /run/secrets/vault_addr
+    #      VAULT_TOKEN: /run/secrets/vault_token
     networks:
       - app-network
 #    restart: always
