@@ -11,9 +11,9 @@ services:
     ports:
       - "${BACKEND_PORT}:8080"
     environment:
-      - APP_ENVIRONMENT=${APP_ENVIRONMENT}
-      - VAULT_ADDR=/run/secrets/vault_addr
-      - VAULT_TOKEN=/run/secrets/vault_token
+      APP_ENVIRONMENT: ${APP_ENVIRONMENT}
+      VAULT_ADDR: /run/secrets/vault_addr
+      VAULT_TOKEN: /run/secrets/vault_token
     networks:
       - app-network
     restart: always
@@ -35,8 +35,8 @@ services:
       - minio_root_user
       - minio_root_password
     environment:
-      - MINIO_ROOT_USER_FILE=/run/secrets/minio_root_user
-      - MINIO_ROOT_PASSWORD_FILE=/run/secrets/minio_root_password
+      MINIO_ROOT_USER_FILE: /run/secrets/minio_root_user
+      MINIO_ROOT_PASSWORD_FILE: /run/secrets/minio_root_password
     ports:
       - "${MINIO_CONNECTION_PORT}:9000"
       - "${MINIO_UI_PORT}:9001"
@@ -55,7 +55,9 @@ secrets:
     file: secrets/vault_addr.txt
   vault_token:
     file: secrets/vault_token.txt
+
 volumes:
   storage:
+
 networks:
   app-network:
