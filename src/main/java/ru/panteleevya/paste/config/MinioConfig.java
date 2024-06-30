@@ -17,11 +17,13 @@ public class MinioConfig {
     public AmazonS3 s3Client(
             @Value("${s3.access-key-id}") String accessKeyId,
             @Value("${s3.secret-access-key}") String secretAccessKey,
-            @Value("${s3.service-endpoint}") String serviceEndpoint,
+            @Value("${s3.service-host}") String serviceHost,
+            @Value("${s3.service-port}") String servicePort,
             @Value("${signing-region}") String signingRegion
     ) {
         AWSCredentials credentials = new BasicAWSCredentials(accessKeyId, secretAccessKey);
         AWSCredentialsProvider credentialsProvider = new AWSStaticCredentialsProvider(credentials);
+        String serviceEndpoint = serviceHost + ":" + servicePort;
         EndpointConfiguration endpointConfiguration = new EndpointConfiguration(serviceEndpoint, signingRegion);
         return AmazonS3ClientBuilder.standard()
                 .withCredentials(credentialsProvider)
