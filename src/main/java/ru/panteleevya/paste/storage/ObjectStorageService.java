@@ -1,6 +1,5 @@
 package ru.panteleevya.paste.storage;
 
-import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
@@ -41,13 +40,12 @@ public class ObjectStorageService {
                  GZIPInputStream gzipInputStream = new GZIPInputStream(s3Object.getObjectContent());
                  ObjectInputStream objectInputStream = new ObjectInputStream(gzipInputStream)) {
                 return objectInputStream.readObject();
-            } catch (SdkClientException e) {
-                // not found
-                return null;
             } catch (IOException e) {
                 log.warn("Something went wrong while fetching object from ObjectStorage, retry time is {}", retryIndex);
             } catch (ClassNotFoundException e) {
                 throw new IllegalStateException(e);
+            } catch (Exception e) {
+                log.error("Something went wrong while fetching object with objectKey={} from bucket={}. Error={}", objectKey, bucketName, e);
             }
         }
         throw new RuntimeException("Fetching object from ObjectStorage failed after " + retryCount + " retries");
@@ -72,8 +70,8 @@ public class ObjectStorageService {
             ObjectMetadata objectMetadata = new ObjectMetadata();
             objectMetadata.setContentLength(compressedObject.length);
             s3Client.putObject(bucketName, objectKey, byteArrayInputStream, objectMetadata);
-        } catch (SdkClientException e) {
-            log.error("Saving object with key={} to object storage failed", objectKey);
+        } catch (Exception e) {
+            log.error("Saving object with key={} to bucket={} failed", objectKey, bucketName);
             throw new RuntimeException(e);
         }
     }
@@ -84,8 +82,8 @@ public class ObjectStorageService {
     public void deleteObject(String objectKey) {
         try {
             s3Client.deleteObject(bucketName, objectKey);
-        } catch (SdkClientException ignored) {
-            // no content anyway
+        } catch (Exception e) {
+            log.error("Failed to delete object with objectKey={} from bucket={}", objectKey, bucketName);
         }
     }
 }
