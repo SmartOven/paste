@@ -48,13 +48,13 @@ services:
 
 secrets:
   minio_root_user:
-    file: secrets/minio_root_user.txt
+    file: ./secrets/minio_root_user.txt
   minio_root_password:
-    file: secrets/minio_root_password.txt
+    file: ./secrets/minio_root_password.txt
   app_vault_addr:
-    file: secrets/app_vault_addr.txt
+    file: ./secrets/app_vault_addr.txt
   app_vault_token:
-    file: secrets/app_vault_token.txt
+    file: ./secrets/app_vault_token.txt
 
 volumes:
   storage:
