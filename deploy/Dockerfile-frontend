@@ -1,6 +1,5 @@
 FROM node:21.5.0 AS build
 
-
 WORKDIR /app
 
 # Copy the package files from the frontend directory
