@@ -18,4 +18,4 @@ COPY ../deploy/frontend-nginx.conf /etc/nginx/sites-enabled/frontend-nginx
 
 EXPOSE 80
 
-CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
