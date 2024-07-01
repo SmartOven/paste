@@ -4,18 +4,18 @@ Example for Ubuntu 20+
 
 ## System preparation
 
-1. Update system with `sudo apt update`
+1. Update system with `apt update`
 2. Install and set up `ufw`
-    - `sudo apt install ufw`
-    - `sudo ufw default deny incoming`
-    - `sudo ufw default allow outgoing`
-    - `sudo ufw allow 22/tcp`
-    - `sudo ufw allow 22`
-    - `sudo ufw allow 80/tcp`
-    - `sudo ufw allow 443`
-    - `sudo ufw allow 80,443/tcp`
-    - `sudo ufw enable`
-    - `sudo ufw status verbose`
+    - `apt install ufw`
+    - `ufw default deny incoming`
+    - `ufw default allow outgoing`
+    - `ufw allow 22/tcp`
+    - `ufw allow 22`
+    - `ufw allow 80/tcp`
+    - `ufw allow 443`
+    - `ufw allow 80,443/tcp`
+    - `ufw enable`
+    - `ufw status verbose`
     - Don't forget to check if new ssh connections are working
 3. Install `nginx` with `sudo apt install nginx`
 4. Add env variables in the beginning of the `~/.bashrc`
@@ -34,4 +34,8 @@ Example for Ubuntu 20+
 3. Set up docker containers with `docker-compose build --no-cache`
 4. Run docker containers with `docker-compose up -d`
 5. Run `bash setup_nginx.sh` to set up `nginx` config
-6. Check if it is working by opening `http://<server_ip>` in the browser
+6. Enable access to minio ports
+   - `ufw allow 9000`
+   - `ufw allow 9000/tcp`
+   - `ufw enable`
+7. Check if it is working by opening `http://<server_ip>` in the browser
