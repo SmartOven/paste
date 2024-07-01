@@ -18,8 +18,7 @@ FROM nginx:alpine
 COPY --from=build /app/dist /usr/share/nginx/html
 
 # Copy a custom Nginx configuration file
-COPY ../deploy/frontend-nginx.conf /etc/nginx/sites-available/frontend-nginx
-CMD ["ln", "-s", "/etc/nginx/sites-available/frontend-nginx", "/etc/nginx/sites-enabled/"]
+COPY ../deploy/frontend-nginx.conf /etc/nginx/sites-enabled/frontend-nginx
 
 # Expose port 80
 EXPOSE 80
