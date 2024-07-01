@@ -35,10 +35,12 @@ public class ObjectStorageService {
      * Fetching and decompressing object from ObjectStorage
      */
     public Object fetchObject(String objectKey) {
+        log.info("Fetching object with objectKey={} from bucket={}", objectKey, bucketName);
         for (int retryIndex = 1; retryIndex <= retryCount; retryIndex++) {
             try (S3Object s3Object = s3Client.getObject(bucketName, objectKey);
                  GZIPInputStream gzipInputStream = new GZIPInputStream(s3Object.getObjectContent());
                  ObjectInputStream objectInputStream = new ObjectInputStream(gzipInputStream)) {
+                log.info("Successfully fetched object with objectKey={} from bucket={}", objectKey, bucketName);
                 return objectInputStream.readObject();
             } catch (IOException e) {
                 log.warn("Something went wrong while fetching object from ObjectStorage, retry time is {}", retryIndex);
@@ -55,13 +57,14 @@ public class ObjectStorageService {
      * Compressing and saving object in ObjectStorage
      */
     public <T extends Serializable> void compressAndSaveObject(String objectKey, T object) {
+        log.info("Compressing and saving object with objectKey={} to bucket={}", objectKey, bucketName);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         try (GZIPOutputStream gzipOutputStream = new GZIPOutputStream(byteArrayOutputStream);
              ObjectOutputStream objectOutputStream = new ObjectOutputStream(gzipOutputStream)) {
             objectOutputStream.writeObject(object);
         } catch (IOException e) {
-            log.error("Writing object with keu={} to byte array failed", objectKey);
-            throw new RuntimeException(e);
+            log.error("Writing object with key={} to byte array failed. Error={}", objectKey, e);
+            return;
         }
 
         byte[] compressedObject = byteArrayOutputStream.toByteArray();
@@ -71,19 +74,23 @@ public class ObjectStorageService {
             objectMetadata.setContentLength(compressedObject.length);
             s3Client.putObject(bucketName, objectKey, byteArrayInputStream, objectMetadata);
         } catch (Exception e) {
-            log.error("Saving object with key={} to bucket={} failed", objectKey, bucketName);
-            throw new RuntimeException(e);
+            log.error("Saving object with key={} to bucket={} failed. Error={}", objectKey, bucketName, e);
+            return;
         }
+        log.info("Successfully compressed and saved object with objectKey={} to bucket={}", objectKey, bucketName);
     }
 
     /**
      * Deletes object from ObjectStorage
      */
     public void deleteObject(String objectKey) {
+        log.info("Deleting object with objectKey={} from bucket={}", objectKey, bucketName);
         try {
             s3Client.deleteObject(bucketName, objectKey);
         } catch (Exception e) {
             log.error("Failed to delete object with objectKey={} from bucket={}", objectKey, bucketName);
+            return;
         }
+        log.info("Successfully deleted object with objectKey={} from bucket={}", objectKey, bucketName);
     }
 }
