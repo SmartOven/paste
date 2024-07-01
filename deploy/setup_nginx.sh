@@ -6,4 +6,4 @@ sudo ln -s /etc/nginx/sites-available/minio.panteleevya.ru /etc/nginx/sites-enab
 yes | cp -rf port9000.conf /etc/nginx/sites-available/port9000.conf
 sudo ln -s /etc/nginx/sites-available/port9000.conf /etc/nginx/sites-enabled/
 nginx -t
-service nginx reload
+systemctl restart nginx
