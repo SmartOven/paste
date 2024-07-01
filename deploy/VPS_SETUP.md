@@ -30,9 +30,8 @@ Example for Ubuntu 20+
 
 ## Set up the project
 1. Clone repository from GitHub and navigate to its `deploy` folder
-2. Set up environment for `minio`
-   - Create folder `secrets` in the current folder
-   - Inside `secrets` create two files: `minio_root_user.txt` and `minio_root_password.txt` 
-   - Create yourself `user` and `password` and put them in these files
-3. Set up docker containers with `docker-compose up -d`
-4. Run `bash setup_nginx.sh` to set up `nginx` config
+2. Create `.env` file and fill it with all necessary variables from `README.md`
+3. Set up docker containers with `docker-compose build --no-cache`
+4. Run docker containers with `docker-compose up -d`
+5. Run `bash setup_nginx.sh` to set up `nginx` config
+6. Check if it is working by opening `http://<server_ip>` in the browser
