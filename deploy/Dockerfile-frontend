@@ -2,9 +2,12 @@ FROM node:21.5.0 AS build
 
 WORKDIR /app
 
+COPY ../frontend/package*.json ./
+
+RUN npm install
+
 COPY ../frontend ./
 
-RUN npm ci
 RUN npm run build
 
 FROM nginx:alpine
