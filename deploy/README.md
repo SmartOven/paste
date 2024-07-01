@@ -1,5 +1,8 @@
 # Necessary env variables in .env file
-```
+```.env
+# When changing MINIO_CONNECTION_PORT don't forget to also update `s3.service-port` in the vault
+# When changing FRONTEND_PORT don't forget to also update `frontend.port` in the vault
+# When changing any port don't forget to also update nginx config
 BACKEND_PORT=8082
 FRONTEND_PORT=3002
 MINIO_CONNECTION_PORT=9000
