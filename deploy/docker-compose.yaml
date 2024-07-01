@@ -7,10 +7,13 @@ services:
       dockerfile: deploy/Dockerfile-backend
     ports:
       - "${BACKEND_PORT}:8080"
+    secrets:
+      - app_vault_addr
+      - app_vault_token
     environment:
       APP_ENVIRONMENT: ${APP_ENVIRONMENT}
-      APP_VAULT_ADDR: ${APP_VAULT_ADDR}
-      APP_VAULT_TOKEN: ${APP_VAULT_TOKEN}
+      APP_VAULT_ADDR: /run/secrets/app_vault_addr
+      APP_VAULT_TOKEN: /run/secrets/app_vault_token
     networks:
       - app-network
     restart: always
@@ -48,6 +51,10 @@ secrets:
     file: secrets/minio_root_user.txt
   minio_root_password:
     file: secrets/minio_root_password.txt
+  app_vault_addr:
+    file: secrets/app_vault_addr.txt
+  app_vault_token:
+    file: secrets/app_vault_token.txt
 
 volumes:
   storage:
